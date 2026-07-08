@@ -1,0 +1,35 @@
+{% extends 'loja/base.html' %}
+
+{% block titulo %}Lista de Produtos{% endblock %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Produtos</h1>
+    <a href="{% url 'loja:produto_cadastro' %}" class="btn btn-primary">Novo Produto</a>
+</div>
+
+{% if produtos %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for produto in produtos %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            {% if produto.imagem_url %}
+            <img src="{{ produto.imagem_url }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 220px; object-fit: cover;">
+            {% else %}
+            <div class="bg-secondary-subtle text-center py-5">Sem imagem</div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ produto.nome }}</h5>
+                <p class="card-text mb-1"><strong>Código:</strong> {{ produto.codigo }}</p>
+                <p class="card-text mb-1"><strong>Cor:</strong> {{ produto.get_cor_display }}</p>
+                <p class="card-text mb-1"><strong>Preço de venda:</strong> R$ {{ produto.preco_venda|floatformat:2 }}</p>
+                <p class="card-text mb-0"><strong>Fabricação:</strong> {{ produto.data_fabricacao|date:'d/m/Y' }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">Nenhum produto cadastrado até o momento.</div>
+{% endif %}
+{% endblock %}

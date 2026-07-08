@@ -1,0 +1,45 @@
+{% extends 'loja/base.html' %}
+
+{% block titulo %}Lista de Clientes{% endblock %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Clientes</h1>
+    <a href="{% url 'loja:cliente_cadastro' %}" class="btn btn-primary">Novo Cliente</a>
+</div>
+
+{% if clientes %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Gênero</th>
+                <th>Contato preferido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.nome }}</td>
+                <td>{{ cliente.cpf }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.telefone }}</td>
+                <td>{{ cliente.cidade }}</td>
+                <td>{{ cliente.get_estado_display }}</td>
+                <td>{{ cliente.get_genero_display }}</td>
+                <td>{{ cliente.get_contato_display }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">Nenhum cliente cadastrado até o momento.</div>
+{% endif %}
+{% endblock %}

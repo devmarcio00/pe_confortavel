@@ -1,0 +1,74 @@
+{% extends 'loja/base.html' %}
+
+{% block titulo %}Cadastro de Produto{% endblock %}
+
+{% block conteudo %}
+<h1 class="mb-4">Cadastro de Produto</h1>
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+{% endif %}
+
+<form id="idFrmCadProduto" name="frmCadProduto" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="idTxtNomeProduto" class="form-label">Nome do produto</label>
+        <input type="text" class="form-control{% if form.nome.errors %} is-invalid{% endif %}"
+               id="idTxtNomeProduto" name="nomeProduto"
+               value="{{ form.nome.value|default:'' }}" maxlength="70" required>
+        {% if form.nome.errors %}<div class="invalid-feedback">{{ form.nome.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="idTxtPrecoCompraProduto" class="form-label">Preço de compra (R$)</label>
+            <input type="number" step="0.01" min="0.01" class="form-control{% if form.preco_compra.errors %} is-invalid{% endif %}"
+                   id="idTxtPrecoCompraProduto" name="precoCompraProduto"
+                   value="{{ form.preco_compra.value|default:'' }}" required>
+            {% if form.preco_compra.errors %}<div class="invalid-feedback">{{ form.preco_compra.errors|join:' ' }}</div>{% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="idTxtPrecoVendaProduto" class="form-label">Preço de venda (R$)</label>
+            <input type="number" step="0.01" min="0.01" class="form-control{% if form.preco_venda.errors %} is-invalid{% endif %}"
+                   id="idTxtPrecoVendaProduto" name="precoVendaProduto"
+                   value="{{ form.preco_venda.value|default:'' }}" required>
+            {% if form.preco_venda.errors %}<div class="invalid-feedback">{{ form.preco_venda.errors|join:' ' }}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="idBSelCorProduto" class="form-label">Cor</label>
+            <select class="form-select{% if form.cor.errors %} is-invalid{% endif %}"
+                    id="idBSelCorProduto" name="corProduto" required>
+                <option value="">Selecione...</option>
+                {% for valor, rotulo in form.fields.cor.choices %}
+                    {% if valor %}
+                    <option value="{{ valor }}" {% if form.cor.value == valor %}selected{% endif %}>{{ rotulo }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if form.cor.errors %}<div class="invalid-feedback">{{ form.cor.errors|join:' ' }}</div>{% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="idTxtDataFabricacaoProduto" class="form-label">Data de fabricação</label>
+            <input type="date" class="form-control{% if form.data_fabricacao.errors %} is-invalid{% endif %}"
+                   id="idTxtDataFabricacaoProduto" name="dataFabricacaoProduto"
+                   value="{{ form.data_fabricacao.value|date:'Y-m-d'|default:'' }}" required>
+            {% if form.data_fabricacao.errors %}<div class="invalid-feedback">{{ form.data_fabricacao.errors|join:' ' }}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="idTxtImagemProduto" class="form-label">Imagem do produto</label>
+        <input type="file" accept="image/*" class="form-control{% if form.arquivo_imagem.errors %} is-invalid{% endif %}"
+               id="idTxtImagemProduto" name="imagemProduto" required>
+        <div class="form-text">O nome do arquivo será salvo como referência da imagem (máx. 25 caracteres).</div>
+        {% if form.arquivo_imagem.errors %}<div class="invalid-feedback">{{ form.arquivo_imagem.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <input type="submit" class="btn btn-primary" id="idBtnCadastrarProduto" name="cadastrarProduto" value="Cadastrar">
+    <input type="reset" class="btn btn-outline-secondary" id="idBtnLimparProduto" name="limparProduto" value="Limpar">
+</form>
+{% endblock %}

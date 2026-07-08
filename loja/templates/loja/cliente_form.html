@@ -1,0 +1,130 @@
+{% extends 'loja/base.html' %}
+
+{% block titulo %}Cadastro de Cliente{% endblock %}
+
+{% block conteudo %}
+<h1 class="mb-4">Cadastro de Cliente</h1>
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+{% endif %}
+
+<form id="idFrmCadCliente" name="frmCadCliente" method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="idTxtNomeCliente" class="form-label">Nome completo</label>
+        <input type="text" class="form-control{% if form.nome.errors %} is-invalid{% endif %}"
+               id="idTxtNomeCliente" name="nomeCliente"
+               value="{{ form.nome.value|default:'' }}" minlength="25" maxlength="70" required>
+        <div class="form-text">Entre 25 e 70 caracteres.</div>
+        {% if form.nome.errors %}<div class="invalid-feedback">{{ form.nome.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="idTxtCpfCliente" class="form-label">CPF</label>
+            <input type="text" class="form-control{% if form.cpf.errors %} is-invalid{% endif %}"
+                   id="idTxtCpfCliente" name="cpfCliente"
+                   value="{{ form.cpf.value|default:'' }}" maxlength="11" required
+                   pattern="\d{11}" title="Somente números, 11 dígitos">
+            {% if form.cpf.errors %}<div class="invalid-feedback">{{ form.cpf.errors|join:' ' }}</div>{% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="idTxtTelefoneCliente" class="form-label">Telefone</label>
+            <input type="text" class="form-control{% if form.telefone.errors %} is-invalid{% endif %}"
+                   id="idTxtTelefoneCliente" name="telefoneCliente"
+                   value="{{ form.telefone.value|default:'' }}" maxlength="11" required
+                   pattern="\d+" title="Somente números">
+            {% if form.telefone.errors %}<div class="invalid-feedback">{{ form.telefone.errors|join:' ' }}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="idTxtEnderecoCliente" class="form-label">Endereço</label>
+        <input type="text" class="form-control{% if form.endereco.errors %} is-invalid{% endif %}"
+               id="idTxtEnderecoCliente" name="enderecoCliente"
+               value="{{ form.endereco.value|default:'' }}" maxlength="100" required>
+        {% if form.endereco.errors %}<div class="invalid-feedback">{{ form.endereco.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="idBSelEstadoCliente" class="form-label">Estado de domicílio</label>
+            <select class="form-select{% if form.estado.errors %} is-invalid{% endif %}"
+                    id="idBSelEstadoCliente" name="estadoCliente" required>
+                <option value="">Selecione...</option>
+                {% for valor, rotulo in form.fields.estado.choices %}
+                    {% if valor %}
+                    <option value="{{ valor }}" {% if form.estado.value == valor %}selected{% endif %}>{{ rotulo }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if form.estado.errors %}<div class="invalid-feedback">{{ form.estado.errors|join:' ' }}</div>{% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="idTxtCidadeCliente" class="form-label">Cidade</label>
+            <input type="text" class="form-control{% if form.cidade.errors %} is-invalid{% endif %}"
+                   id="idTxtCidadeCliente" name="cidadeCliente"
+                   value="{{ form.cidade.value|default:'' }}" maxlength="50" required>
+            {% if form.cidade.errors %}<div class="invalid-feedback">{{ form.cidade.errors|join:' ' }}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label d-block">Gênero</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="idRadGeneroClienteM" name="generoCliente" value="M"
+                   {% if form.genero.value == 'M' %}checked{% endif %} required>
+            <label class="form-check-label" for="idRadGeneroClienteM">Masculino</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="idRadGeneroClienteF" name="generoCliente" value="F"
+                   {% if form.genero.value == 'F' %}checked{% endif %}>
+            <label class="form-check-label" for="idRadGeneroClienteF">Feminino</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="idRadGeneroClienteO" name="generoCliente" value="O"
+                   {% if form.genero.value == 'O' %}checked{% endif %}>
+            <label class="form-check-label" for="idRadGeneroClienteO">Outros</label>
+        </div>
+        {% if form.genero.errors %}<div class="text-danger small">{{ form.genero.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="idBSelContatoCliente" class="form-label">Forma de contato preferida</label>
+            <select class="form-select{% if form.contato.errors %} is-invalid{% endif %}"
+                    id="idBSelContatoCliente" name="contatoCliente" required>
+                <option value="">Selecione...</option>
+                {% for valor, rotulo in form.fields.contato.choices %}
+                    {% if valor %}
+                    <option value="{{ valor }}" {% if form.contato.value == valor %}selected{% endif %}>{{ rotulo }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if form.contato.errors %}<div class="invalid-feedback">{{ form.contato.errors|join:' ' }}</div>{% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="idTxtEmailCliente" class="form-label">E-mail</label>
+            <input type="email" class="form-control{% if form.email.errors %} is-invalid{% endif %}"
+                   id="idTxtEmailCliente" name="emailCliente"
+                   value="{{ form.email.value|default:'' }}" maxlength="100" required>
+            <div class="form-text">Este e-mail também será seu nome de usuário.</div>
+            {% if form.email.errors %}<div class="invalid-feedback">{{ form.email.errors|join:' ' }}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="idTxtSenhaCliente" class="form-label">Senha</label>
+        <input type="password" class="form-control{% if form.senha_plana.errors %} is-invalid{% endif %}"
+               id="idTxtSenhaCliente" name="senhaCliente"
+               minlength="8" maxlength="8" required>
+        <div class="form-text">Deve conter exatamente 8 caracteres.</div>
+        {% if form.senha_plana.errors %}<div class="invalid-feedback">{{ form.senha_plana.errors|join:' ' }}</div>{% endif %}
+    </div>
+
+    <input type="submit" class="btn btn-primary" id="idBtnCadastrarCliente" name="cadastrarCliente" value="Cadastrar">
+    <input type="reset" class="btn btn-outline-secondary" id="idBtnLimparCliente" name="limparCliente" value="Limpar">
+</form>
+{% endblock %}

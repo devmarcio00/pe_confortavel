@@ -1,0 +1,37 @@
+{% extends 'loja/base.html' %}
+
+{% block titulo %}Pé Confortável - Início{% endblock %}
+
+{% block conteudo %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-4">
+        <h1 class="display-5 fw-bold">Pé Confortável Ltda.</h1>
+        <p class="col-md-8 fs-4">
+            Há mais de 20 anos calçando o Brasil com qualidade, conforto e estilo.
+            A rede Pé Confortável conta com lojas físicas e agora também com uma
+            loja on-line, reunindo os melhores fabricantes de calçados do mercado.
+        </p>
+        <a class="btn btn-primary btn-lg" href="{% url 'loja:produto_lista' %}" role="button">
+            Ver Produtos
+        </a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'loja:cliente_cadastro' %}" role="button">
+            Cadastre-se
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Qualidade</h3>
+        <p>Trabalhamos apenas com fabricantes reconhecidos pela durabilidade e conforto de seus produtos.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Variedade</h3>
+        <p>Um catálogo completo de calçados para todos os estilos e ocasiões.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Atendimento</h3>
+        <p>Equipe pronta para ajudar você a encontrar o par perfeito.</p>
+    </div>
+</div>
+{% endblock %}
